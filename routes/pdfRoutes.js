@@ -31,8 +31,11 @@ router
       console.log(error)
       return res.status(500).send("something went wrong")
     }
+    
+    const newFileName = req.file.filename;
+    const splitFileName = newFileName.split("-")
     await knex("pdf")
-    .insert({user_id:req.userId, file_name:req.file.filename, file_link:`http://localhost:5000/uploads/${req.file.filename}.pdf`})
+    .insert({user_id:req.userId, file_name:splitFileName[1], file_link:`http://localhost:5000/uploads/${req.file.filename}`})
     return res.status(200).send("success")
   })
   
