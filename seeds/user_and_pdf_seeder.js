@@ -1,15 +1,21 @@
+const bcrypt = require("bcrypt");
+
+const hashedPassword = (password) => {
+    return bcrypt.hashSync(password, 10);
+}
+
 const usersData = [
   {
     id: 1,
     name: "Kat",
     email: "kat@example.com",
-    password: "password",
+    password: hashedPassword("password")
   },
   {
     id: 2,
     name: "Victor",
     email: "victor@example.com",
-    password: "password"
+    password: hashedPassword("password")
   }
 ];
 
@@ -17,27 +23,27 @@ const pdfData = [
   {
     user_id: 1,
     file_name: "Cards 1",
-    file_link: "http://localhost/uploads/cards1.pdf"
+    file_link: "http://localhost:5000/uploads/test-cards1.pdf"
   },
   {
     user_id: 1,
     file_name: "Cards 2",
-    file_link: "http://localhost/uploads/cards2.pdf"
+    file_link: "http://localhost:5000/uploads/test-cards2.pdf"
   },
   {
     user_id: 2,
     file_name: "Lesson 1",
-    file_link: "http://localhost/uploads/lesson1.pdf"
+    file_link: "http://localhost:5000/uploads/test-lesson1.pdf"
   },
   {
     user_id: 2,
     file_name: "Lesson 2",
-    file_link: "http://localhost/uploads/lesson2.pdf"
+    file_link: "http://localhost:5000/uploads/test-lesson2.pdf"
   },
   {
     user_id: 1,
     file_name: "Writing Practice",
-    file_link: "http://localhost/uploads/writing-practice.pdf"
+    file_link: "http://localhost:5000/uploads/test-writing-practice.pdf"
   }
 ];
 

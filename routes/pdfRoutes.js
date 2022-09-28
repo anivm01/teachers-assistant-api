@@ -2,48 +2,43 @@ const express = require("express");
 const knex = require("knex")(require("../knexfile"));
 const router = express.Router();
 const jwt = require("jsonwebtoken");
+const authorize = require('../middleware/authorize');
+const multer = require('multer');
+
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads")
+  },
+  filename: (req, file, cb)=> {
+    cb(null, Date.now() + "-" + file.originalname)
+  }
+})
+
+const upload = multer({storage}).single("file")
 
 router
-.get("/", (req, res) => {
-  const bearerTokenString = req.headers.authorization;
-
-  if (!bearerTokenString) {
-    return res
-      .status(401)
-      .json({
-        error: "Resource requires bearer token in authorization header",
-      });
-  }
-
-  const splitBearerToken = bearerTokenString.split(" ");
-
-  if (splitBearerToken.length !== 2) {
-    return res.status(400).json({ error: "Bearer token is malformed" });
-  }
-
-  const token = splitBearerToken[1];
-
-    jwt.verify( token, process.env.JWT_SECRET_KEY, (err, decoded) => {
-      if (err) {
-        return res.status(403).json("token was not decoded correctly");
-      } else {
-       const userId = decoded.user_id;
-        knex
-          .select("*")
-          .from("pdf")
-          .where({user_id:userId})
-          .then((data) => {
-            return res.status(200).json(data);
-          })
-          .catch((err) => {
-            return res.status(500).send("error getting pdf info");
-          });
-      }
-    }
-  );
+.get("/", authorize, async (req, res) => {
+    const pdfs = await knex
+        .select("*")
+        .from("pdf")
+        .where({ user_id: req.userId });
+    res.json(pdfs);
 })
-// .post("/", (req, res) => {
+.post("/", authorize, (req, res) => {
+  upload(req, res, async (error) => {
+    if (error) {
+      console.log(error)
+      return res.status(500).send("something went wrong")
+    }
+    await knex("pdf")
+    .insert({user_id:req.userId, file_name:req.file.filename, file_link:`http://localhost:5000/uploads/${req.file.filename}.pdf`})
+    return res.status(200).send("success")
+  })
+  
+})
 
-// })
+
+
 
 module.exports = router;
