@@ -1,4 +1,5 @@
 const bcrypt = require("bcrypt");
+require("dotenv").config();
 
 const hashedPassword = (password) => {
     return bcrypt.hashSync(password, 10);
@@ -23,27 +24,22 @@ const pdfData = [
   {
     user_id: 1,
     file_name: "Cards 1",
-    file_link: "http://localhost:5000/uploads/test-cards1.pdf"
-  },
-  {
-    user_id: 1,
-    file_name: "Cards 2",
-    file_link: "http://localhost:5000/uploads/test-cards2.pdf"
+    file_link: `http://localhost:${PORT}uploads/test-cards1.pdf`
   },
   {
     user_id: 2,
     file_name: "Lesson 1",
-    file_link: "http://localhost:5000/uploads/test-lesson1.pdf"
+    file_link: `http://localhost:${PORT}uploads/test-lesson1.pdf`
   },
   {
     user_id: 2,
     file_name: "Lesson 2",
-    file_link: "http://localhost:5000/uploads/test-lesson2.pdf"
+    file_link: `http://localhost:${PORT}uploads/test-lesson2.pdf`
   },
   {
     user_id: 1,
     file_name: "Writing Practice",
-    file_link: "http://localhost:5000/uploads/test-writing-practice.pdf"
+    file_link: `http://localhost:${PORT}uploads/test-writing-practice.pdf`
   }
 ];
 
