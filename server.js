@@ -10,11 +10,13 @@ app.use(cors());
 
 const userRoutes = require("./routes/userRoutes");
 const pdfRoutes = require("./routes/pdfRoutes");
+const testRoutes = require("./routes/testRoutes")
 
 
 
 app.use("/users", userRoutes);
 app.use("/pdf", pdfRoutes);
+app.use("/test", testRoutes);
 
 
 app.listen(PORT, () => {
