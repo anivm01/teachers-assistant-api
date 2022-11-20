@@ -15,7 +15,7 @@ router
         }          
         const emailExists = await knex("user").where({email: req.body.email})
 
-        if (emailExists.length === 0) {
+        if (emailExists.length !== 0) {
             return res.status(409).json({status: 409, message: "We found a conflict. An account under this email already exists"})
         }
 

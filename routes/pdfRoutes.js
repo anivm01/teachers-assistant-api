@@ -19,23 +19,33 @@ const upload = multer({storage}).single("file")
 
 router
 .get("/", authorize, async (req, res) => {
+  
+  try {
     const pdfs = await knex
-        .select("*")
-        .from("pdf")
-        .where({ user_id: req.userId });
-    res.json(pdfs);
+    .select("*")
+    .from("pdf")
+    .where({ user_id: req.userId });
+    if(pdfs.length === 0) {
+      return res.status(404).json({status:404, message:"Couldn't find any pdfs for this account"})
+    }
+    return res.status(200).json(pdfs);
+  }
+
+  catch (err) {
+    res.status(500).json({message:"There was a problem with the server", error:err})
+  }
+    
 })
 .post("/", authorize, (req, res) => {
-  upload(req, res, async (error) => {
-    if (error) {
-      console.log(error)
-      return res.status(500).send("something went wrong")
-    }
-    await knex("pdf")
-    .insert({user_id:req.userId, file_name:req.file.filename, file_link:`http://localhost:5000/uploads/${req.file.filename}.pdf`})
-    return res.status(200).send("success")
-  })
-  
+    upload(req, res, async (error) => {
+      if (error) {
+        return res.status(500).json({message:"Something went wrong with the upload. Try again later"})
+      }else{
+        const result = await knex("pdf")
+        .insert({user_id:req.userId.id, file_name:req.file.filename, file_link:`/uploads/${req.file.filename}`})
+        return res.status(200).json({message:"New PDF added"})
+      }  
+    })
 })
 
 
