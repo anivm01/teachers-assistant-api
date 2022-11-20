@@ -7,7 +7,7 @@
     return knex.schema.createTable("user", function(table) {
         table.increments("id");
         table.string("name").notNullable();
-        table.string("email").notNullable();
+        table.string("email").unique().notNullable();
         table.string("password").notNullable();
     }).createTable("pdf", function(table){
         table.increments("id");

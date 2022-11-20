@@ -20,6 +20,5 @@ app.use("/test", testRoutes);
 
 
 app.listen(PORT, () => {
-    console.log(pdfRoutes)
     console.log(`Server listening on http://localhost:${PORT}`);
 });
