@@ -21,13 +21,14 @@ router
 .get("/", authorize, async (req, res) => {
   
   try {
-    const pdfs = await knex
-    .select("*")
-    .from("pdf")
-    .where({ user_id: req.userId });
+    const pdfs = await knex ("pdf")
+    .where({user_id:req.userId.id})
+    .select("*");
+    
     if(pdfs.length === 0) {
       return res.status(404).json({status:404, message:"Couldn't find any pdfs for this account"})
     }
+
     return res.status(200).json(pdfs);
   }
 
