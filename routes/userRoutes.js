@@ -4,7 +4,8 @@ const router = express.Router();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const encryptPassword = require('../middleware/encryptPassword');
-const validatePassword = require('../middleware/validatePassword')
+const validatePassword = require('../middleware/validatePassword');
+require('dotenv').config();
 
 
 router
