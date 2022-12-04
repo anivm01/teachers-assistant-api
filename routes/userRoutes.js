@@ -34,6 +34,10 @@ router
         .from("user")
         .where({email: req.body.email})
 
+        if (!foundUsers.length) {
+            return res.status(404).json({message: "The email wasn't found"})
+        }
+
         const token = jwt.sign({ user_id: foundUsers[0] }, process.env.JWT_SECRET_KEY);
         
         res.status(200).json({ message: "Successfully logged in", token: token })

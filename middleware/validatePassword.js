@@ -4,7 +4,7 @@ const knex = require('knex')(require("../knexfile"));
 
 module.exports = async (req, res, next) => {
     if (!req.body.email || !req.body.password){
-        return res.status(400).json({error:"Login requires username and password fields"})
+        return res.status(400).json({message:"Login requires username and password fields"})
      }
     try {
         const foundUsers = await knex ('user')
@@ -12,11 +12,11 @@ module.exports = async (req, res, next) => {
                             .where({email: req.body.email})
 
         if (foundUsers.length === 0) {
-            return res.status(401).json({error:"invalid login credentials"})
+            return res.status(401).json({message:"Invalid login credentials"})
         }
         const passwordIsValid = await bcrypt.compare(req.body.password, foundUsers[0].password)
         if(!passwordIsValid){
-            return res.status(401).json({error:"incorrect password"})
+            return res.status(401).json({message:"Incorrect password"})
         }
     }
     catch (err) {
